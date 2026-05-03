@@ -99,9 +99,8 @@ input:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px;bor
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
 
 /* ── Header / Nav ── */
-.site-header{display:flex;align-items:center;justify-content:space-between;padding:12px 0;margin-bottom:8px;border-bottom:1px solid var(--line);flex-wrap:wrap;gap:8px}
-.site-header h1{margin:0;font-size:22px;color:var(--ink);font-weight:700;letter-spacing:-.02em}
-.site-header h1 span{color:var(--accent)}
+.site-header{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.site-header h1{font:700 30px/1.1 -apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;margin:0;letter-spacing:-.015em;color:var(--accent)}
 .site-nav{display:flex;gap:12px;align-items:center;font-size:13px}
 .site-nav a{color:var(--muted);text-decoration:none;padding:4px 8px;border-radius:6px;transition:color .15s, background .15s}
 .site-nav a:hover{color:var(--ink);background:var(--panel2)}
@@ -219,10 +218,16 @@ body.view-only .edit-row{display:none!important}
 
   <!-- Header -->
   <div class="site-header">
-    <h1>🍺 <span>Beer</span></h1>
+    <div>
+      <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap">
+        <h1>🍺 Beer</h1>
+        <nav style="display:flex;gap:4px;font-size:13px">
+          <a href="/plants" style="color:var(--muted);text-decoration:none;padding:4px 10px;border:1px solid var(--line);border-radius:6px;transition:color .15s,border-color .15s">Plants</a>
+          <a href="/" style="color:var(--muted);text-decoration:none;padding:4px 10px;border:1px solid var(--line);border-radius:6px;transition:color .15s,border-color .15s">Home</a>
+        </nav>
+      </div>
+    </div>
     <div class="site-nav">
-      <a href="/plants">Plants</a>
-      <a href="/">Home</a>
       <span style="position:relative">
         <button class="ghost tiny" id="themeBtn">◐ theme</button>
         <div id="themePop" style="display:none;position:absolute;right:0;top:110%;background:var(--panel);border:1px solid var(--line2);border-radius:10px;padding:10px;z-index:30;box-shadow:var(--shadow);min-width:160px"></div>
