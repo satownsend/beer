@@ -233,36 +233,6 @@ body.view-only .edit-row{display:none!important}
     <span id="syncText">loading…</span>
   </div>
 
-  <!-- Stats -->
-  <div class="panel" id="statsPanel">
-    <h2>Stats</h2>
-    <div class="grid3" id="statsCards"></div>
-    <div class="grid3" style="margin-top:20px">
-      <div>
-        <div class="stats-chart-label">Styles brewed</div>
-        <div id="chartStyles"></div>
-      </div>
-      <div>
-        <div class="stats-chart-label">Most used hops</div>
-        <div id="chartHops"></div>
-      </div>
-      <div>
-        <div class="stats-chart-label">Most used grains</div>
-        <div id="chartGrains"></div>
-      </div>
-    </div>
-    <div class="grid2" style="margin-top:20px">
-      <div>
-        <div class="stats-chart-label">Brews per year</div>
-        <div id="chartBrewsYear"></div>
-      </div>
-      <div>
-        <div class="stats-chart-label">Yeast strains</div>
-        <div id="chartYeast"></div>
-      </div>
-    </div>
-  </div>
-
   <!-- Brew list -->
   <div class="panel">
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px">
@@ -288,6 +258,56 @@ body.view-only .edit-row{display:none!important}
         </tr></thead>
         <tbody id="brewBody"></tbody>
       </table>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="panel" id="statsPanel">
+    <h2>Stats</h2>
+    <div class="grid3" id="statsCards"></div>
+    <div class="grid3" style="margin-top:20px">
+      <div>
+        <div class="stats-chart-label">Styles brewed</div>
+        <div id="chartStyles"></div>
+      </div>
+      <div>
+        <div class="stats-chart-label">Most used hops (all)</div>
+        <div id="chartHops"></div>
+      </div>
+      <div>
+        <div class="stats-chart-label">Most used grains</div>
+        <div id="chartGrains"></div>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:20px">
+      <div>
+        <div class="stats-chart-label">Bittering hops</div>
+        <div id="chartHopsBittering"></div>
+      </div>
+      <div>
+        <div class="stats-chart-label">Hopstand hops</div>
+        <div id="chartHopsHopstand"></div>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:20px">
+      <div>
+        <div class="stats-chart-label">Dry hop</div>
+        <div id="chartHopsDryhop"></div>
+      </div>
+      <div>
+        <div class="stats-chart-label">Mash hops</div>
+        <div id="chartHopsMash"></div>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:20px">
+      <div>
+        <div class="stats-chart-label">Brews per year</div>
+        <div id="chartBrewsYear"></div>
+      </div>
+      <div>
+        <div class="stats-chart-label">Yeast strains</div>
+        <div id="chartYeast"></div>
+      </div>
     </div>
   </div>
 
@@ -604,6 +624,14 @@ function renderStats(){
   drawPie('#chartStyles', new Map(Object.entries(styleCounts)), 'Styles brewed');
   drawPie('#chartHops', new Map(Object.entries(hopCounts)), 'Most used hops');
   drawPie('#chartGrains', new Map(Object.entries(grainCounts)), 'Most used grains');
+
+  // Hops by stage
+  const hopsByStage = {bittering:{}, hopstand:{}, dryhop:{}, mash:{}};
+  state.hops.forEach(h=>{ if(hopsByStage[h.stage]) hopsByStage[h.stage][h.hop] = (hopsByStage[h.stage][h.hop]||0)+1; });
+  drawPie('#chartHopsBittering', new Map(Object.entries(hopsByStage.bittering)), 'Bittering hops');
+  drawPie('#chartHopsHopstand', new Map(Object.entries(hopsByStage.hopstand)), 'Hopstand hops');
+  drawPie('#chartHopsDryhop', new Map(Object.entries(hopsByStage.dryhop)), 'Dry hop');
+  drawPie('#chartHopsMash', new Map(Object.entries(hopsByStage.mash)), 'Mash hops');
 
   // Yeast pie
   const yeastCounts = {};
