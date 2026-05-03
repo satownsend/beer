@@ -223,6 +223,10 @@ body.view-only .edit-row{display:none!important}
     <div class="site-nav">
       <a href="/plants">Plants</a>
       <a href="/">Home</a>
+      <span style="position:relative">
+        <button class="ghost tiny" id="themeBtn">◐ theme</button>
+        <div id="themePop" style="display:none;position:absolute;right:0;top:110%;background:var(--panel);border:1px solid var(--line2);border-radius:10px;padding:10px;z-index:30;box-shadow:var(--shadow);min-width:160px"></div>
+      </span>
       <button class="ghost tiny" id="settingsBtn">Settings</button>
     </div>
   </div>
@@ -899,6 +903,36 @@ function buildThemeSwatches(){
     if(sw) applyTheme(sw.dataset.theme);
   });
 }
+
+/* ── Theme popover ── */
+function buildThemePop(){
+  const pop = $('#themePop');
+  const cur = document.documentElement.getAttribute('data-theme');
+  pop.innerHTML = THEMES.map(t=>`
+    <div class="theme-pop-row" data-theme="${t.id}" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;${t.id===cur?'background:var(--panel2)':''}">
+      <div style="display:flex;width:48px;height:28px;border-radius:6px;overflow:hidden;border:1px solid var(--line)">
+        <div style="flex:1;background:${t.bg}"></div>
+        <div style="flex:1;background:${t.accent}"></div>
+      </div>
+      <span style="font-size:13px">${t.label}</span>
+      ${t.id===cur?'<span style="margin-left:auto;color:var(--accent)">✓</span>':''}
+    </div>
+  `).join('');
+  pop.addEventListener('click', e=>{
+    const row = e.target.closest('[data-theme]');
+    if(row){ applyTheme(row.dataset.theme); buildThemePop(); }
+  });
+}
+
+$('#themeBtn').onclick = ()=>{
+  const pop = $('#themePop');
+  if(pop.style.display==='none'){ buildThemePop(); pop.style.display='block'; }
+  else pop.style.display='none';
+};
+document.addEventListener('click', e=>{
+  if(!e.target.closest('#themeBtn') && !e.target.closest('#themePop'))
+    $('#themePop').style.display='none';
+});
 
 /* ── Settings ── */
 function openSettings(){
